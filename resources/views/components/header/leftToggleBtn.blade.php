@@ -1,0 +1,1 @@
+<i class="fa fa-bars hide-phone" style="width:32px;padding-top:2px;float:left"></i>

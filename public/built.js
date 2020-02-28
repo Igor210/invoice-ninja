@@ -21856,6 +21856,28 @@ NINJA.TEMPLATES = {
     }
     return t
 }, NINJA.decodeJavascript = function (t, e) {
+    var rtlChar = /[\u0590-\u083F]|[\u08A0-\u08FF]|[\uFB1D-\uFDFF]|[\uFE70-\uFEFF]/mg;
+    var titletext = t.account.name;
+    var isRTL1 = titletext.match(rtlChar);
+    if ( isRTL1 !== null ) { titletext = titletext.split(" ").reverse().join(" "); }
+    t.account.name = titletext;
+    var address1 = t.account.address1;
+    var isRTL1 = address1.match(rtlChar);
+    if ( isRTL1 !== null ) { address1 = address1.split(" ").reverse().join("  "); }
+    t.account.address1 = address1;
+    var address2 = t.account.address2;
+    var isRTL1 = address2.match(rtlChar);
+    if ( isRTL1 !== null ) { address2 = address2.split(" ").reverse().join("  "); }
+    t.account.address2 = address2;
+    var city = t.account.city;
+    var isRTL1 = city.match(rtlChar);
+    if ( isRTL1 !== null ) { city = city.split(" ").reverse().join("  "); }
+    t.account.city = city;
+    var state = t.account.state;
+    var isRTL1 = state.match(rtlChar);
+    if ( isRTL1 !== null ) { state = state.split(" ").reverse().join("  "); }
+    t.account.state = state;
+    
     var n = t.account,
         i = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII=",
         o = {
@@ -21902,39 +21924,73 @@ NINJA.TEMPLATES = {
         var origin_subtotal = o.subtotals;
         for (var l = 0; l < origin_subtotal.length; l++) {
             var temp_i = origin_subtotal[l];
+            
+            var inputString = temp_i[0].text;
+            var isRTL1 = inputString.match(rtlChar);
+            if ( isRTL1 !== null ) {
+                inputString = inputString.split(" ").reverse().join("  ");
+            }
+            temp_i[0].text = inputString;
+
             var reverse = temp_i.reverse();
             temp_Ary.push(reverse);
         }
         o.subtotals = temp_Ary;
     }
 
-    // var rtlChar = /[\u0590-\u083F]|[\u08A0-\u08FF]|[\uFB1D-\uFDFF]|[\uFE70-\uFEFF]/mg;
-    // if((o.notesAndTerms)[0]){
-    //     if(((o.notesAndTerms)[0]).stack){
-    //         var inputString1 = (((o.notesAndTerms)[0]).stack)[0].text;
-    //         var isRTL1 = inputString1.match(rtlChar);
-    //         if ( isRTL1 !== null ) {
-    //             inputString1 = inputString1.split(" ").reverse().join("  ");
-    //         }
-    //         (((o.notesAndTerms)[0]).stack)[0].text = inputString1;
-    //     }
-    // }
-    // if((o.notesAndTerms)[3]){
-    //     if(((o.notesAndTerms)[3]).stack){
-    //         var inputString2 = (((o.notesAndTerms)[3]).stack)[0].text;
-    //         var isRTL1 = inputString2.match(rtlChar);
-    //         if ( isRTL1 !== null ) {
-    //             inputString2 = inputString2.split(" ").reverse().join("  ");
-    //         }
-    //         (((o.notesAndTerms)[3]).stack)[0].text = inputString2;
-    //     }
-    // }
-    // var inputString3 = o.invoiceFooter;
-    // var isRTL1 = inputString3.match(rtlChar);
-    // if ( isRTL1 !== null ) {
-    //     inputString3 = inputString3.split(" ").reverse().join("  ");
-    // }
-    // o.invoiceFooter = inputString3;
+    var rtlChar = /[\u0590-\u083F]|[\u08A0-\u08FF]|[\uFB1D-\uFDFF]|[\uFE70-\uFEFF]/mg;
+    if((o.notesAndTerms)[0]){
+        if(((o.notesAndTerms)[0]).stack){
+            var inputString1 = (((o.notesAndTerms)[0]).stack)[0].text;
+            var isRTL1 = inputString1.match(rtlChar);
+            if ( isRTL1 !== null ) {
+                inputString1 = inputString1.split("\n").reverse().join("\n");
+                inputString1 = inputString1.split(" ");
+                var tempinputString1 = '';
+                for(z = 0; z < inputString1.length; z++){
+                    tempinputString1 += " "+ inputString1[z];
+                }
+                inputString1 = tempinputString1.split("").reverse();
+            }
+            (((o.notesAndTerms)[0]).stack)[0].text = inputString1;
+        }
+    }
+    if((o.notesAndTerms)[3]){
+        if(((o.notesAndTerms)[3]).stack){
+            var inputString2 = (((o.notesAndTerms)[3]).stack)[0].text;
+            var isRTL1 = inputString2.match(rtlChar);
+            if ( isRTL1 !== null ) {
+                inputString2 = inputString2.split("\n").reverse().join("\n");
+                inputString2 = inputString2.split(" ");
+                var tempinputString2 = '';
+                for(z = 0; z < inputString2.length; z++){
+                    tempinputString2 += " "+ inputString2[z];
+                }
+                inputString2 = tempinputString2.split("").reverse();
+
+            }
+            (((o.notesAndTerms)[3]).stack)[0].text = inputString2;
+        }
+    }
+    var inputString3 = o.invoiceFooter;
+    var isRTL1 = inputString3.match(rtlChar);
+    if ( isRTL1 !== null ) {
+        inputString3 = inputString3.split("\n").reverse().join("\n");
+        inputString3 = inputString3.split(" ");
+        var tempinputString3 = '';
+        for(z = 0; z < inputString3.length; z++){
+            tempinputString3 += " "+ inputString3[z];
+        }
+        inputString3 = tempinputString3.split("").reverse();
+    }
+    o.invoiceFooter = inputString3;
+    
+    var clientname = o.clientDetails[0].text;
+    var isRTL1 = clientname.match(rtlChar);
+    if ( isRTL1 !== null ) {
+        clientname = clientname.split(" ").reverse().join("  ");
+    }
+    o.clientDetails[0].text = clientname;
     // igor
 
     for (var a in o) {
@@ -22259,15 +22315,62 @@ NINJA.TEMPLATES = {
                 }
             }
             
-            for (var i = 0; i < 2; i++) {
-                var rtlChar = /[\u0590-\u083F]|[\u08A0-\u08FF]|[\uFB1D-\uFDFF]|[\uFE70-\uFEFF]/mg;
-                var inputString = p[i].text;
-                var isRTL = inputString.match(rtlChar);
-                if ( isRTL !== null ) {
-                    inputString = inputString.split(" ").reverse().join("  ");
+            var rtlChar = /[\u0590-\u083F]|[\u08A0-\u08FF]|[\uFB1D-\uFDFF]|[\uFE70-\uFEFF]/mg;
+            var inptStr = p[0].text;
+            var isRTL = inptStr.match(rtlChar);
+            if ( isRTL !== null ) {
+                var str1 = "", str2 = "", str3 = "";
+                if( inptStr.length <= 14 ){
+                    var strAry = inptStr.slice(0,(inptStr.length)).split(" ").reverse();
+                    for(var i = 0; i < strAry.length; i++){
+                        if(isNaN(strAry[i])) str1 = str1 + strAry[i] + "  ";
+                        else str1 = str1 + strAry[i] + " ";
+                    }
+                } else if ( inptStr.length <= 28 ) {
+                    var strAry = inptStr.slice(0,14).split(" ").reverse();
+                    for(var i = 0; i < strAry.length; i++){
+                        if(isNaN(strAry[i])) str1 = str1 + strAry[i] + "  ";
+                        else str1 = str1 + strAry[i] + " ";
+                    }
+                    var strAry = inptStr.slice(14,(inptStr.length)).split(" ").reverse();
+                    for(var i = 0; i < strAry.length; i++){
+                        if(isNaN(strAry[i])) str2 = str2 + strAry[i] + "  ";
+                        else str2 = str2 + strAry[i] + " ";
+                    }
+                } else {
+                    var strAry = inptStr.slice(0,14).split(" ").reverse();
+                    for(var i = 0; i < strAry.length; i++){
+                        if(isNaN(strAry[i])) str1 = str1 + strAry[i] + "  ";
+                        else str1 = str1 + strAry[i] + " ";
+                    }
+                    var strAry = inptStr.slice(14,28).split(" ").reverse();
+                    for(var i = 0; i < strAry.length; i++){
+                        if(isNaN(strAry[i])) str2 = str2 + strAry[i] + "  ";
+                        else str2 = str2 + strAry[i] + " ";
+                    }
+                    var strAry = inptStr.slice(28,(inptStr.length)).split(" ").reverse();
+                    for(var i = 0; i < strAry.length; i++){
+                        if(isNaN(strAry[i])) str3 = str3 + strAry[i] + "  ";
+                        else str3 = str3 + strAry[i] + " ";
+                    }
                 }
-                p[i].text = inputString;
+                inptStr = str1+"\n"+str2+"\n"+str3;
             }
+            p[0].text = inptStr;
+
+            var inputString = p[1].text;
+            var isRTL = inputString.match(rtlChar);
+            if ( isRTL !== null ) {
+                inputString = inputString.split("\n").reverse().join("\n");
+                inputString = inputString.split(" ");
+                var tempinputString = '';
+                for(z = 0; z < inputString.length; z++){
+                    tempinputString += " "+ inputString[z];
+                }
+                inputString = tempinputString.split("").reverse();
+            }
+            p[1].text = inputString;
+
             a.push(p)
         }
     }
@@ -22279,8 +22382,7 @@ NINJA.TEMPLATES = {
             temp_a.push(reverseAry);
         }
         a = temp_a;
-    }
-    // igor
+    } // igor
     return NINJA.prepareDataTable(a, "invoiceItems");
 }, NINJA.invoiceDocuments = function (t) {
     function e(t) {
@@ -22408,6 +22510,15 @@ NINJA.TEMPLATES = {
         temp_Ary = [];
         for (var l = 0; l < i.length; l++) {
             var temp_i = i[l];
+
+            var inputString = temp_i[0].text;
+            var rtlChar = /[\u0590-\u083F]|[\u08A0-\u08FF]|[\uFB1D-\uFDFF]|[\uFE70-\uFEFF]/mg;
+            var isRTL1 = inputString.match(rtlChar);
+            if ( isRTL1 !== null ) {
+                inputString = inputString.split(" ").reverse().join("  ");
+            }
+            temp_i[0].text = inputString;
+
             var reverse = temp_i.reverse();
             temp_Ary.push(reverse);
         }
